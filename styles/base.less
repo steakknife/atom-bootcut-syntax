@@ -105,7 +105,8 @@ atom-text-editor .search-results .marker.current-result .region,
   }
 
   &.operator {
-    color: @cyan;
+    color: @gray;
+    font-weight: bold;
   }
 
   &.other.special-method {
@@ -144,6 +145,10 @@ atom-text-editor .search-results .marker.current-result .region,
 
 .variable {
   color: @cyan;
+
+  &.constant {
+    color: @violet;
+  }
 
   &.global {
     color: @orange;
