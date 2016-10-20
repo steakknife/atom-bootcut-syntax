@@ -68,7 +68,8 @@ atom-text-editor .search-results .marker.current-result .region,
 // <     -> punctuation separator inheritance
 // Bar   -> entity other inherited-class
 // public -> keyword other special-method
-punctuation separator variable
+// @blah  -> keyword control at-rule import less
+//punctuation separator variable
 
 .comment {
   color: @base01;
@@ -97,6 +98,10 @@ punctuation separator variable
   &.control,
   &.punctuation {
     color: @cyan;
+
+    &.at-rule {
+      color: @orange;
+    }
   }
 
   &.operator {
@@ -124,20 +129,25 @@ punctuation separator variable
   }
 
   &.numeric {
-    color: @cyan;
+    color: @orange;
   }
 
   &.other.color {
-    color: @cyan;
+    color: @green;
   }
 
+  &.other.unit,
   &.other.symbol {
     color: @blue;
   }
 }
 
 .variable {
-  color: @violet;
+  color: @cyan;
+
+  &.global {
+    color: @orange;
+  }
 
   &.interpolation {
     color: @yellow;
@@ -154,7 +164,7 @@ punctuation separator variable
 }
 
 .string {
-  color: @cyan;
+  color: @orange;
 
   &.regexp {
     color: @blue;
