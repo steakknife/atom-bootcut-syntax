@@ -1,5 +1,6 @@
 @import "syntax-variables";
 
+
 atom-text-editor, :host {
   background-color: @syntax-background-color;
   color: @syntax-text-color;
@@ -62,6 +63,13 @@ atom-text-editor .search-results .marker.current-result .region,
   border: 1px solid @syntax-result-marker-color-selected;
 }
 
+// class -> keyword control class
+// Foo   -> entity name type class
+// <     -> punctuation separator inheritance
+// Bar   -> entity other inherited-class
+// public -> keyword other special-method
+punctuation separator variable
+
 .comment {
   color: @base01;
   font-style: italic;
@@ -73,6 +81,9 @@ atom-text-editor .search-results .marker.current-result .region,
   &.name.type {
     color: @yellow;
     // text-decoration: underline;
+    &.class {
+      color: @green;
+    }
   }
 
   &.other.inherited-class {
@@ -81,19 +92,19 @@ atom-text-editor .search-results .marker.current-result .region,
 }
 
 .keyword {
-  color: @orange;
+  color: @blue;
 
   &.control,
   &.punctuation {
-    color: @orange;
+    color: @cyan;
   }
 
   &.operator {
-    color: @yellow;
+    color: @cyan;
   }
 
   &.other.special-method {
-    color: @orange;
+    color: @red;
   }
 
   &.other.unit {
@@ -102,7 +113,7 @@ atom-text-editor .search-results .marker.current-result .region,
 }
 
 .storage {
-  color: @purple;
+  color: @cyan;
 }
 
 .constant {
@@ -264,8 +275,7 @@ atom-text-editor .search-results .marker.current-result .region,
   }
 
   &.separator {
-    background-color: @gray;
-    color: @syntax-text-color;
+    color: @orange;
   }
 }
 
@@ -280,7 +290,7 @@ atom-text-editor .search-results .marker.current-result .region,
   }
 
   &.changed {
-    color: @purple;
+    color: @cyan;
   }
 
   &.deleted {
@@ -288,7 +298,7 @@ atom-text-editor .search-results .marker.current-result .region,
   }
 
   &.italic {
-    color: @purple;
+    color: @cyan;
     font-style: italic;
   }
 
