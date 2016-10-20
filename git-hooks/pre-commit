@@ -1,0 +1,103 @@
+#!/usr/bin/env ruby
+require 'tmpdir'
+autoload :FileUtils,  'fileutils'
+autoload :Open3,      'open3'
+autoload :Shellwords, 'shellwords'
+
+# ---- setup
+
+INTERACTIVE         = $stdout.tty? || $stderr.tty?
+DOT                 = -'.'
+BLOCK_SIZE          = 4096
+TEMP_INDEX_DIR      = Dir.mktmpdir
+TEMP_INDEX_DIR_REAL = File.realpath(TEMP_INDEX_DIR)
+
+def cleanup
+  FileUtils.remove_entry(TEMP_INDEX_DIR) if File.exist? TEMP_INDEX_DIR
+end
+
+at_exit { cleanup }
+
+%w[INT TERM PIPE HUP QUIT].each do |sig|
+  Signal.trap(sig) { cleanup }
+end
+
+# ---- functions
+
+def fix_up_dir_output(data)
+  data.gsub! TEMP_INDEX_DIR_REAL, DOT
+  data.gsub! TEMP_INDEX_DIR, DOT
+  data
+end
+
+def sh(*args)
+  Open3.popen3(*args) do |_, stdout, stderr, w_thr|
+    files = [stdout, stderr]
+    until files.empty? do
+      if ready = IO.select(files)
+        ready[0].each do |f|
+          begin
+            data = f.read_nonblock BLOCK_SIZE
+            data = fix_up_dir_output data
+            if f.fileno == stderr.fileno
+              $stderr.write data
+            else
+              $stdout.write data
+            end
+          rescue EOFError
+            files.delete f
+          end
+        end
+      end
+    end
+    if !(done = w_thr.value).success?
+      exit(done.exitstatus)
+    end
+  end
+end
+
+def flags(args)
+  skip = false
+  r = []
+  args.each do |a|
+    if a[0] == '-' && !skip
+      a.slice! 0
+      if a[0] == '-'
+        skip ||= a[1].nil?
+        a.slice! 0
+        r << a unless a.empty?
+      else # -[^-]+
+        r += a.split ''
+      end
+    end
+  end
+  r
+end
+
+def less_lint
+  args = %w[lessc --lint]
+  args << '--no-color' unless INTERACTIVE
+  args << 'index.less'
+  sh(*args)
+end
+
+def ensure_git_commit_signed
+  pcmd = `ps -wwp#{Process.ppid} -ocommand=`.chop
+  args = flags(Shellwords.split(pcmd)[1..-1])
+  return unless (args & %w[gpg-sign S]).empty?
+  $stderr.puts 'All git commits must be GPG-signed'
+  $stderr.puts "    command: #{pcmd}"
+  exit 1
+end
+
+# ---- main
+
+# 1. make sure all commits are signed
+ensure_git_commit_signed
+
+# 2. check files that are in the index
+sh 'git', 'checkout-index', '-a', "--prefix=#{TEMP_INDEX_DIR}/"
+Dir.chdir TEMP_INDEX_DIR do
+  # 3. make sure all commits contain only legal .less files
+  less_lint
+end
