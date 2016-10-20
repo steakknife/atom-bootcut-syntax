@@ -1,0 +1,11 @@
+{
+  "name": "bootcut-syntax",
+  "theme": "syntax",
+  "version": "0.0.1",
+  "description": "High-contrast, medium-high brightness theme",
+  "repository": "https://github.com/steakknife/atom-bootcut-syntax",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  }
+}
