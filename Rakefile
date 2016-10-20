@@ -85,17 +85,17 @@ task 'version:minor:bump' do
 end
 
 desc 'bump & publish a new patch version'
-task 'release' => 'version:bump' do
+task 'release' => ['version:bump', 'git:push'] do
   Rake::Task[:publish].invoke($v)
 end
 
 desc 'bump & publish a new minor version'
-task 'release:minor' => 'version:major:bump' do
+task 'release:minor' => ['version:major:bump', 'git:push'] do
   Rake::Task[:publish].invoke($v)
 end
 
 desc 'bump & publish a new major version'
-task 'release:major' => 'version:major:bump' do
+task 'release:major' => ['version:major:bump', 'git:push'] do
   Rake::Task[:publish].invoke($v)
 end
 
@@ -105,6 +105,10 @@ task :setup => %w[setup:less setup:git-hooks]
 desc 'setup only Less'
 task 'setup:less' do
   sh 'npm i -g less'
+end
+
+task 'git:push' do
+  sh 'git push --mirror'
 end
 
 desc 'setup only git-hooks'
