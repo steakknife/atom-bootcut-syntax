@@ -1,7 +1,7 @@
 # Bootcut syntax theme
 
 ## Screenshot
-(Put a screenshot here)
+[![screenshot.png](https://s4.postimg.org/tkzfsm1el/screenshot.png)](https://postimg.org/image/nwt51px21/)
 
 ## Installation
 
