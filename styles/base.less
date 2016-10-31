@@ -1,5 +1,47 @@
 @import "syntax-variables";
 
+// @blah
+//      @ -> keyword control at-rule import less
+//   blah -> punctuation separator variable
+
+// class -> keyword control class
+// File  -> support class
+// BUFSZ -> variable other constant
+// Foo   -> entity name type class
+// <     -> punctuation separator inheritance
+// Bar   -> entity other inherited-class
+// public -> keyword other special-method
+
+// $some_global
+//   $ -> punctuation definition variable
+//   some_global -> variable other readwrite global
+
+// loop, begin, end, rescue -> keyword control
+// do    -> keyword control start-block
+// |y|
+//   | -> punctuation separator variable
+//   y -> variable other block
+// =     -> keyword operator assignment ruby
+// ->    -> support function kernel
+// {     -> punctuation section scope begin
+// }     -> punctuation section scope end
+// false -> constant language boolean
+// true  -> constant language boolean
+// nil   -> constant language nil
+// :abcd
+//       : -> punctuation definition constant
+//    abcd -> constant other symbol
+// 1234  -> constant numeric
+// 1.3   -> constant numeric
+
+// 'abcd'->  inside: string quoted single
+//          outside: punctuation definition string (begin | end)
+
+// "abcd #{foo}"->  inside: string quoted double interpolated
+//   interpolation outside: punctuation section embedded (begin | end)
+//   interpolation inside: (varies)
+//                 outside: punctuation definition string (begin | end)
+
 
 atom-text-editor, :host {
   background-color: @syntax-background-color;
@@ -63,14 +105,6 @@ atom-text-editor .search-results .marker.current-result .region,
   border: 1px solid @syntax-result-marker-color-selected;
 }
 
-// class -> keyword control class
-// Foo   -> entity name type class
-// <     -> punctuation separator inheritance
-// Bar   -> entity other inherited-class
-// public -> keyword other special-method
-// @blah  -> keyword control at-rule import less
-//punctuation separator variable
-
 .comment {
   color: @base01;
   font-style: italic;
@@ -106,7 +140,6 @@ atom-text-editor .search-results .marker.current-result .region,
 
   &.operator {
     color: @gray;
-    font-weight: bold;
   }
 
   &.other.special-method {
@@ -119,11 +152,15 @@ atom-text-editor .search-results .marker.current-result .region,
 }
 
 .storage {
-  color: @cyan;
+  color: @red;
 }
 
 .constant {
   color: @cyan;
+
+  &.language.boolean {
+
+  }
 
   &.character.escape {
     color: @magenta;
@@ -336,6 +373,10 @@ atom-text-editor .search-results .marker.current-result .region,
   &.raw.inline {
     color: @green;
   }
+}
+
+.source {
+  color: @white;
 }
 
 .source.gfm .markup {

@@ -96,7 +96,7 @@ end
 ensure_git_commit_signed
 
 # 2. check files that are in the index
-sh 'git', 'checkout-index', '-a', "--prefix=#{TEMP_INDEX_DIR}/"
+sh 'git', 'checkout-index', '-a', "--prefix=#{TEMP_INDEX_DIR}#{File::SEPARATOR}"
 Dir.chdir TEMP_INDEX_DIR do
   # 3. make sure all commits contain only legal .less files
   less_lint
