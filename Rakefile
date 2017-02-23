@@ -31,7 +31,11 @@ end
 
 def ver_bump(idx, type='')
   $v = self.version = version.split('.').map do |p|
-    p = Integer(p)+1 if idx == 0
+    if idx == 0
+      p = Integer(p)+1
+    elsif idx < 0
+      p = 0
+    end
     idx -= 1
     p
   end.join('.')
