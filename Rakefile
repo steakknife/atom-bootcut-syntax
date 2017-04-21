@@ -42,7 +42,7 @@ def ver_bump(idx, type='')
   sh <<-CMD
   git add package.json && \
   git commit -sS -m '#{type}version bump to #{$v}' && \
-  git tag -s '#{$v}' -m '#{$v}'
+  git tag -s 'v#{$v}' -m '#{$v}'
   CMD
 end
 
@@ -50,7 +50,7 @@ end
 
 desc 'publish atom package using --tag'
 task :publish, [:tag] do |_, args|
-  sh "apm publish --tag #{args[:tag]}"
+  sh "apm publish --tag v#{args[:tag]}"
 end
 
 desc 'package.json version'
